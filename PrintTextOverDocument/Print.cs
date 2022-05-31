@@ -9,7 +9,7 @@ namespace PrintTextOverDocument
 {
     public class Print
     {
-        public static void PrintDocument(string path, string printerName, bool onlyFirstPage, string textHeader = "", string textFooter = "")
+        public static void PrintDocument(string path, string printerName, bool onlyFirstPage, string textHeader = "", string textFooter = "", bool printDate = true)
         {
             var pages = onlyFirstPage ? new List<int> { 1 } : new List<int> { };
 
@@ -46,6 +46,28 @@ namespace PrintTextOverDocument
                         PagesToPrintOn = new[] { 1 }
                     });
             }
+
+
+            /*
+             * add print date
+             * top right corner
+             * format "Print dd.mm.yyyy"
+             */
+            if (printDate)
+            {
+                texts.Add(
+                    new iTextSharpWrapper.Text
+                    {
+                        Value = $"Print {DateTime.Now:dd.MM.yyyy}",
+                        Position = new Point(
+                        isA3 || isLandscape ? (int)pageDimensions.Width - 50 : (int)pageDimensions.Width - 46,
+                        isA3 || isLandscape ? 28 : 28),
+                        FontSize = isA3 || isLandscape ? 12 : 8,
+                        PagesToPrintOn = new[] { 1 },
+                        Alignment = 2
+                    });
+            }
+
 
             // add Text-over
             using (MemoryStream ms = iTextSharpWrapper.WriteToPDF(path, scaleTo, pages, texts))

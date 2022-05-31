@@ -116,7 +116,8 @@ namespace PrintTextOverDocument
             bool success = false; // Assume failure unless you specifically succeed.
 
             di.pDocName = jobName;
-            di.pDataType = "RAW";
+            //di.pDataType = "RAW";
+            di.pDataType = "XPS_PASS";
 
             // Open the printer.
             if (OpenPrinter(printerName.Normalize(), out hPrinter, IntPtr.Zero))
